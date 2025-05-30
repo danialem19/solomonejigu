@@ -25,7 +25,7 @@ const Certifications = () => (
                 <div className="cert-flip-card">
                     <div className="cert-flip-inner">
                         <div className="cert-flip-front">
-                            <img src="CPA-seal.webp" alt="CPA Certified" />
+                            <img src="CPA-seal.png" alt="CPA Certified" />
                         </div>
                         <div className="cert-flip-back">
                             <p>Reviews & compiles financial statements, as well as advises on cost accounting standards
@@ -75,7 +75,7 @@ const Certifications = () => (
                 <div className="cert-flip-card">
                     <div className="cert-flip-inner">
                         <div className="cert-flip-front">
-                            <img src="emory_university_school_of_law_logo.jpeg" alt="Legal Studies" />
+                            <img src="emory_university_school_of_law.jpeg" alt="Legal Studies" />
                         </div>
                         <div className="cert-flip-back">
                             <p>Master of Legal Studies (Business) Law, contract/business law, and legal risks, business
