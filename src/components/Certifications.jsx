@@ -75,7 +75,7 @@ const Certifications = () => (
                 <div className="cert-flip-card">
                     <div className="cert-flip-inner">
                         <div className="cert-flip-front">
-                            <img src="emory_university_school_of_law.jpeg" alt="Legal Studies" />
+                            <img src="emory_law.png" alt="Legal Studies" />
                         </div>
                         <div className="cert-flip-back">
                             <p>Master of Legal Studies (Business) Law, contract/business law, and legal risks, business
