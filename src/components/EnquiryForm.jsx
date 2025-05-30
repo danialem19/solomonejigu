@@ -2,6 +2,19 @@
 import React from 'react';
 
 const EnquiryForm = () => (
+        useEffect(() => {
+            const interval = setInterval(() => {
+              if (window.grecaptcha && window.grecaptcha.render) {
+                clearInterval(interval);
+                window.grecaptcha.ready(() => {
+                  window.grecaptcha.render('recaptcha-container', {
+                    sitekey: '6Le4LD4rAAAAAGkow6vAIr_Pam0f6-LYKAoXIh9Z'
+                  });
+                });
+              }
+            }, 500);
+            return () => clearInterval(interval);
+        }, []);
         <section id="submit-enquiry">
             <h2>
                 Request Consultation
@@ -64,8 +77,7 @@ const EnquiryForm = () => (
                     <input name="entry.1763424804_hour" type="hidden" />
                     <input name="entry.1763424804_minute" type="hidden" />
                    
-                    <div className="g-recaptcha" data-sitekey="6Le4LD4rAAAAAGkow6vAIr_Pam0f6-LYKAoXIh9Z">
-                    </div>
+                    <div id="recaptcha-container" style={{ marginTop: '1rem' }}></div>
                     <button type="submit">
                         Submit
                     </button>
