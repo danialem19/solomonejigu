@@ -1,0 +1,20 @@
+
+.home-section {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  .home-section {
+    background-position: top;
+    padding: 1.5rem;
+  }
+}
