@@ -1,20 +1,21 @@
+import React, { useEffect } from 'react';
 
-import React from 'react';
+const FileUpload = () => {
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (window.grecaptcha && window.grecaptcha.render) {
+        clearInterval(interval);
+        window.grecaptcha.ready(() => {
+          window.grecaptcha.render('recaptcha-upload', {
+            sitekey: '6Le4LD4rAAAAAGkow6vAIr_Pam0f6-LYKAoXIh9Z'
+          });
+        });
+      }
+    }, 500);
+    return () => clearInterval(interval);
+  }, []);
 
-const FileUpload = () => (
-        useEffect(() => {
-            const interval = setInterval(() => {
-              if (window.grecaptcha && window.grecaptcha.render) {
-                clearInterval(interval);
-                window.grecaptcha.ready(() => {
-                  window.grecaptcha.render('recaptcha-container', {
-                    sitekey: '6Le4LD4rAAAAAGkow6vAIr_Pam0f6-LYKAoXIh9Z'
-                  });
-                });
-              }
-            }, 500);
-            return () => clearInterval(interval);
-        }, []);
+  return (
         <section id="upload">
             <h2>
                 Upload Your Documents
@@ -30,8 +31,7 @@ const FileUpload = () => (
                 <input name="email" required="" type="email" placeholder='Email Address' />
                 <input name="phone" required="" type="text" placeholder='Phone Number' />
                 <input multiple="" name="files" required="" type="file" />
-                <div id="recaptcha-container" style={{ marginTop: '1rem' }}></div>
-                </div>
+                <div id="recaptcha-upload" style={{ marginTop: '1rem' }}></div>
                 <button type="submit">
                     Upload
                 </button>
@@ -41,6 +41,7 @@ const FileUpload = () => (
                 </div>
             </form>
         </section>
-);
+  );
+};
 
 export default FileUpload;
