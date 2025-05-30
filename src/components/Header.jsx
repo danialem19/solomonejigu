@@ -13,10 +13,10 @@ const Header = () => {
                     SolomonE Advisory
                 </span>
             </div>
-            <button aria-label="Toggle Navigation" className="hamburger">
+            <button aria-label="Toggle Navigation" className="hamburger" onClick={toggleMenu}>
                 ☰
             </button>
-            <ul className="nav-links">
+            <ul className={`nav-links ${menuOpen ? 'open' : ''}`}>
                 <li>
                     <a href="#home">
                         Home

@@ -1,4 +1,5 @@
 
+import React, { useEffect } from 'react';
 import './App.css';
 import Header from './components/Header';
 import Home from './components/Home';
@@ -11,6 +12,31 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 
 function App() {
+  useEffect(() => {
+    const scrollHint = document.getElementById('scrollHint');
+    const lastSection = document.querySelector('section:last-of-type');
+
+    function checkScrollPosition() {
+      if (!scrollHint || !lastSection) return;
+      const lastRect = lastSection.getBoundingClientRect();
+      const atBottom = lastRect.top < window.innerHeight;
+      scrollHint.classList.toggle('hidden', atBottom);
+    }
+
+    window.addEventListener('scroll', checkScrollPosition);
+    checkScrollPosition();
+
+    scrollHint?.addEventListener('click', () => {
+      window.scrollBy({
+        top: window.innerHeight * 0.5,
+        behavior: 'smooth',
+      });
+    });
+
+    return () => {
+      window.removeEventListener('scroll', checkScrollPosition);
+    };
+  }, []);
   return (
     <div className="App">
       <Header />
