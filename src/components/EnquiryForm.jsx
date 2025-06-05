@@ -1,18 +1,54 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 const EnquiryForm = () => {
+  const formRef = useRef(null);
+  const msgRef = useRef(null);
+
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (window.grecaptcha && window.grecaptcha.render) {
-        clearInterval(interval);
-        window.grecaptcha.ready(() => {
-          window.grecaptcha.render('recaptcha-enquiry', {
-            sitekey: '6Le4LD4rAAAAAGkow6vAIr_Pam0f6-LYKAoXIh9Z'
-          });
+    const form = formRef.current;
+    const formMsg = msgRef.current;
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+
+      const recaptchaResponse = window.grecaptcha?.getResponse();
+
+      const formData = {
+        fullName: form.querySelector('[name="entry.1312302940"]').value,
+        phone: form.querySelector('[name="entry.1228563114"]').value,
+        email: form.querySelector('[name="emailAddress"]').value,
+        serviceType: form.querySelector('[name="entry.874710742"]').value,
+        queryFor: form.querySelector('[name="entry.1846527533"]:checked')?.value || '',
+        description: form.querySelector('[name="entry.870442539"]').value,
+        bestTime: form.querySelector('#datetime').value,
+        recaptchaToken: recaptchaResponse,
+      };
+
+      try {
+        const response = await fetch('http://uploader-env2.eba-dfethggd.us-east-1.elasticbeanstalk.com/api/enquiry', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData),
         });
+
+        if (response.ok) {
+          form.reset();
+          window.grecaptcha?.reset();
+          formMsg.textContent = 'Form submitted successfully!';
+          formMsg.className = 'message success';
+        } else {
+          const errorText = await response.text();
+          formMsg.textContent = `Error: ${errorText || 'Submission failed.'}`;
+          formMsg.className = 'message error';
+        }
+      } catch {
+        formMsg.textContent = 'There was a network or server error.';
+        formMsg.className = 'message error';
       }
-    }, 500);
-    return () => clearInterval(interval);
+    };
+
+    form?.addEventListener('submit', handleSubmit);
+    return () => form?.removeEventListener('submit', handleSubmit);
   }, []);
 
 return (
@@ -28,7 +64,7 @@ return (
                     Interested in learning more about how SolomonE Advisory can support your business? Fill out the form
                     below, and our team will get in touch to discuss your needs and tailor a solution that fits.
                 </p>
-                <form id="serviceForm" method="post">
+                <form id="serviceForm" ref={formRef}>
                     <input name="entry.1312302940" required="" type="text" placeholder="Full Name" />
                     <input name="entry.1228563114" required="" type="text" placeholder="Phone Number"/>
                     <input name="emailAddress" required="" type="email" placeholder="Email Address"/>
@@ -77,13 +113,11 @@ return (
                     <input name="entry.1763424804_day" type="hidden" />
                     <input name="entry.1763424804_hour" type="hidden" />
                     <input name="entry.1763424804_minute" type="hidden" />
-                   
-                    <div id="recaptcha-enquiry" style={{ marginTop: '1rem' }}></div>
+                    <div id="formMsg" ref={msgRef}></div>
+                    <div className="g-recaptcha" data-sitekey="6Le4LD4rAAAAAGkow6vAIr_Pam0f6-LYKAoXIh9Z"></div>
                     <button type="submit">
                         Submit
                     </button>
-                    <div className="message" id="formMsg">
-                    </div>
                 </form>
             </div>
         </section>
