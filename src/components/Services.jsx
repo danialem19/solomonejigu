@@ -7,6 +7,7 @@ const Services = () => {
   const [modalData, setModalData] = useState({ title: '', description: '' });
 
   const serviceDetails = {
+    "Payroll Services": "Process monthly payroll and pay staff, Withhold and file state and federal employment taxes, and Issue and submit W2, 1099, 941, and 940", 
     "Outsourced CFO": "We handle daily financial transactions, prepare reconciliations, and deliver reports that give insight into your operations and cash flow.",
     "Tax Preparation": "Prepare and file federal and state tax returns, manage deductions, and ensure regulatory compliance with peace of mind.",
     "System Setup": "Set up QuickBooks and Financial Edge, integrate payment systems with your bank, and customize for your business.",

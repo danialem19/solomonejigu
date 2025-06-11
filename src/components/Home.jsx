@@ -4,7 +4,7 @@ import './Home.css';
 const Home = () => (
         <section id="home" className="home-section">
             <div className="home-content">
-                <h1>Welcome to SolomonE Advisory</h1>
+                <h1>Welcome to Solomon Ejigu Advisory</h1>
                 <p>Your trusted partner in accounting, tax, financial, and business advisory services.</p>
             </div>
         </section>
