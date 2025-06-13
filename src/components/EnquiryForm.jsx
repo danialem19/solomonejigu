@@ -25,7 +25,7 @@ const EnquiryForm = () => {
       };
 
       try {
-        const response = await fetch('https://api.solomon-e.com/api/enquiry', {
+        const response = await fetch('api.solomonejigu.com/api/enquiry', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData),

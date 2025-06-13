@@ -14,7 +14,7 @@ const FileUpload = () => {
       e.preventDefault();
       const formData = new FormData(form);
       const xhr = new XMLHttpRequest();
-      xhr.open('POST', 'http://api.solomon-e.com/upload');
+      xhr.open('POST', 'api.solomonejigu.com/upload');
 
       xhr.upload.onprogress = function (e) {
         if (e.lengthComputable) {
