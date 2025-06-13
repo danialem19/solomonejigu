@@ -25,6 +25,7 @@ const EnquiryForm = () => {
       };
 
       try {
+        // const response = await fetch('http://localhost:8080/api/enquiry', {
         const response = await fetch('api.solomonejigu.com/api/enquiry', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
