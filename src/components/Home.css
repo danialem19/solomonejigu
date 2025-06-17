@@ -1,20 +1,84 @@
-
-.home-section {
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  min-height: 100vh;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 2rem;
+section.circle-section {
+  position: relative;
+  width: 100%;
+  height: 450px;
+  background: linear-gradient(135deg, #00adef, #f7fbff);
+  overflow: hidden;
+  padding: 1rem;
+  box-sizing: border-box;
+  border-radius: 5px;
 }
 
+.circle {
+  z-index: 0;
+}
+.circle-content h1 {
+  text-align: right;
+  margin-top: 10rem;
+  padding-right: 0rem;
+  font-family: oswald;
+  font-size: 35px;
+  font-weight: 500;
+  text-transform: uppercase;
+  line-height: 1;
+  color: #333;
+	-webkit-text-stroke: 1px #282828;
+	text-shadow: 0px 4px 4px #282828;
+}
+
+.circle-content {
+  z-index: 1;
+  position: relative;
+}
+.circle-content p {
+  font-size: 1.1rem;
+  line-height: 1.25;
+  text-align: right;
+  font-weight: bold;
+  color: #2b3989;
+  font-family: Georgia, serif;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5)
+}
+
+/* Animated circle styles */
+.circle {
+  position: absolute;
+  background: #fff;
+  border-radius: 50%;
+  animation: scale 3s ease-in-out infinite alternate;
+  transform: scale(1);
+  transition: all 0.3s ease;
+}
+
+#circle-small   { width: 20vw; height: 20vw; top: 50px; left: -10vw; opacity: 0.4; animation-delay: 0s; }
+#circle-medium  { width: 30vw; height: 30vw; top: 0; left: -15vw; opacity: 0.3; animation-delay: 0.3s; }
+#circle-large   { width: 40vw; height: 40vw; top: -50px; left: -20vw; opacity: 0.2; animation-delay: 0.6s; }
+
+@keyframes scale {
+  to { transform: scale(1.1); }
+}
+
+/* ✅ Responsive adjustments: keep circles, scale down, and center content */
 @media (max-width: 768px) {
-  .home-section {
-    background-position: top;
-    padding: 1.5rem;
+  section.circle-section {
+    height: auto;
+    padding: 3rem 1rem 6rem;
   }
+
+  .circle-content h1 {
+    font-size: 1.5rem;
+    margin-top: 4rem;
+    padding-right: 0;
+    text-align: right;
+  }
+
+  .circle-content p {
+    font-size: 1rem;
+    padding-right: 0;
+    text-align: right;
+  }
+
+  #circle-small   { width: 60vw; height: 60vw; top: 65px; left: -45vw; }
+  #circle-medium  { width: 75vw; height: 75vw; top: 10vw; left: -50vw; }
+  #circle-large   { width: 100vw; height: 100vw; top: -10px; left: -65vw; }
 }
