@@ -33,16 +33,6 @@ const Header = () => {
                     </a>
                 </li>
                 <li>
-                    <a href="#submit-enquiry">
-                        Consultation
-                    </a>
-                </li>
-                <li>
-                    <a href="#upload">
-                        File Upload
-                    </a>
-                </li>
-                <li>
                     <a href="#contact">
                         Contact Us
                     </a>

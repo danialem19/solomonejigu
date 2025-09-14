@@ -1,0 +1,118 @@
+.sticky-form-modal {
+    position: fixed;
+    right: 2rem;
+    bottom: 5rem; /* adjust as needed to be above footer */
+    z-index: 1000;
+    max-width: 340px;
+    width: 100%;
+    transition: opacity 0.3s, transform 0.3s;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.sticky-form-modal.closed {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(40px);
+}
+
+.sticky-form-modal.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.sticky-form-content {
+    background: #fff;
+    border-radius: 12px 12px 0 0;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.15);
+    padding: 1.5rem 1rem 1rem 1rem;
+    position: relative;
+}
+
+.close-sticky-form {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+    font-size: 1.7rem;
+    color: #007bff;
+    cursor: pointer;
+    font-weight: bold;
+    z-index: 2;
+}
+
+.sticky-open-btn {
+    position: fixed;
+    right: 2rem;
+    bottom: 5rem;
+    z-index: 999;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 24px 24px 0 0;
+    padding: 0.7rem 2rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+.form-status {
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.form-status.success {
+    color: green;
+}
+
+.form-status.error {
+    color: red;
+}
+
+.recaptcha {
+    margin: 6px 0;
+    display: flex;
+    justify-content: center;
+}
+
+@media (max-width: 360px) {
+    .recaptcha {
+        transform: scale(0.9);
+        transform-origin: center;
+    }
+}
+
+/* Add to both FileUpload.css and EnquiryForm.css */
+.sticky-icon-btn {
+    position: fixed;
+    bottom: 5rem;
+    z-index: 1001;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.sticky-icon-btn.upload {
+    right: 12rem;
+    background: #28a745;
+}
+
+.sticky-icon-btn.enquiry {
+    right: 2rem;
+    background: #007bff;
+}
+
+.sticky-icon-btn:hover,
+.sticky-icon-btn:focus {
+    background: #0056b3;
+}

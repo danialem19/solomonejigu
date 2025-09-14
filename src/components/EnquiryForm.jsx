@@ -1,128 +1,141 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import './EnquiryForm.css';
+
+const RECAPTCHA_SITE_KEY = process.env.REACT_APP_RECAPTCHA_SITE_KEY;
+const GOOGLE_SCRIPT_URL = process.env.REACT_APP_GOOGLE_INQ_SCRIPT_URL;
 
 const EnquiryForm = () => {
-  const formRef = useRef(null);
-  const msgRef = useRef(null);
+    const [open, setOpen] = useState(false);
+    const formRef = useRef(null);
+    const msgRef = useRef(null);
 
-  useEffect(() => {
-    const form = formRef.current;
-    const formMsg = msgRef.current;
+    useEffect(() => {
+        if (!open) return;
 
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-
-      const recaptchaResponse = window.grecaptcha?.getResponse();
-
-      const formData = {
-        fullName: form.querySelector('[name="entry.1312302940"]').value,
-        phone: form.querySelector('[name="entry.1228563114"]').value,
-        email: form.querySelector('[name="emailAddress"]').value,
-        serviceType: form.querySelector('[name="entry.874710742"]').value,
-        queryFor: form.querySelector('[name="entry.1846527533"]:checked')?.value || '',
-        description: form.querySelector('[name="entry.870442539"]').value,
-        bestTime: form.querySelector('#datetime').value,
-        recaptchaToken: recaptchaResponse,
-      };
-
-      try {
-        // const response = await fetch('http://localhost:8080/api/enquiry', {
-        const response = await fetch('api.solomonejigu.com/api/enquiry', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData),
-        });
-
-        if (response.ok) {
-          form.reset();
-          window.grecaptcha?.reset();
-          formMsg.textContent = 'Form submitted successfully!';
-          formMsg.className = 'message success';
-        } else {
-          const errorText = await response.text();
-          formMsg.textContent = `Error: ${errorText || 'Submission failed.'}`;
-          formMsg.className = 'message error';
+        const recaptchaContainer = document.getElementById('recaptcha-container');
+        if (
+            window.grecaptcha &&
+            typeof window.grecaptcha.render === 'function' &&
+            recaptchaContainer
+        ) {
+            if (recaptchaContainer.children.length === 0) {
+                window.grecaptcha.render('recaptcha-container', {
+                    sitekey: RECAPTCHA_SITE_KEY,
+                });
+            } else {
+                window.grecaptcha.reset();
+            }
         }
-      } catch {
-        formMsg.textContent = 'There was a network or server error.';
-        formMsg.className = 'message error';
-      }
-    };
 
-    form?.addEventListener('submit', handleSubmit);
-    return () => form?.removeEventListener('submit', handleSubmit);
-  }, []);
+        const form = formRef.current;
+        const formMsg = msgRef.current;
 
-return (
-        <section id="submit-enquiry">
-            <h2>
-                Request Consultation
-            </h2>
-            <div className="form-box">
-                <h3>
-                    Reserve Consultation, We’re Here to Help
-                </h3>
-                <p>
-                    Interested in learning more about how SolomonE Advisory can support your business? Fill out the form
-                    below, and our team will get in touch to discuss your needs and tailor a solution that fits.
-                </p>
-                <form id="serviceForm" ref={formRef}>
-                    <input name="entry.1312302940" required="" type="text" placeholder="Full Name" />
-                    <input name="entry.1228563114" required="" type="text" placeholder="Phone Number"/>
-                    <input name="emailAddress" required="" type="email" placeholder="Email Address"/>
-                    <select name="entry.874710742" required="">
-                        <option value="">
-                            --Please choose an option service--
-                        </option>
-                        <option value="Outsourced CFO / Bookkeeping">
-                            Outsourced CFO / Bookkeeping
-                        </option>
-                        <option value="Tax Filing">
-                            Tax Filing
-                        </option>
-                        <option value="Internal Audit">
-                            Internal Audit
-                        </option>
-                        <option value="QuickBooks/Financial Edge Setup">
-                            QuickBooks/Financial Edge Setup
-                        </option>
-                        <option value="Advisory Services">
-                            Advisory Services
-                        </option>
-                        <option value="Other">
-                            Other
-                        </option>
-                    </select>
-                    <div className="radio-group">
-                        <label>
-                            <input name="entry.1846527533" type="radio" value="Personal" />
-                            Personal Enquiry
-                        </label>
-                        <label>
-                            <input name="entry.1846527533" type="radio" value="Company" />
-                            Business Enquiry
-                        </label>
-                    </div>
-                    <textarea name="entry.870442539" required="" rows="4" placeholder="Give us short description"></textarea>
-                    <label htmlFor="hr">
-                        <i className="fa-solid fa-phone">
-                        </i>
-                        Best time to call
-                    </label>
-                    <input id="datetime" required="" type="datetime-local"/>
-                    <input name="entry.1763424804_year" type="hidden"/>
-                    <input name="entry.1763424804_month" type="hidden" />
-                    <input name="entry.1763424804_day" type="hidden" />
-                    <input name="entry.1763424804_hour" type="hidden" />
-                    <input name="entry.1763424804_minute" type="hidden" />
-                    <div id="formMsg" ref={msgRef}></div>
-                    <div className="g-recaptcha" data-sitekey="6Le4LD4rAAAAAGkow6vAIr_Pam0f6-LYKAoXIh9Z"></div>
-                    <button type="submit">
-                        Submit
-                    </button>
-                </form>
+        const handleSubmit = async (e) => {
+            e.preventDefault();
+            const recaptchaResponse = window.grecaptcha?.getResponse();
+            const formData = {
+                contactInfo: form.querySelector('[name="contactInfo"]').value,
+                ctaType: form.querySelector('[name="ctaType"]').value,
+                serviceType: form.querySelector('[name="serviceType"]').value,
+                shortDescription: form.querySelector('[name="shortDescription"]').value,
+                recaptchaToken: recaptchaResponse,
+            };
+
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const defaultBtnText = submitBtn ? submitBtn.textContent : 'Send';
+            if (submitBtn) {
+                submitBtn.textContent = 'Submitting…';
+                submitBtn.classList.add('is-loading');
+                submitBtn.disabled = true;
+            }
+
+            try {
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+                    body: JSON.stringify(formData),
+                });
+
+                form.reset();
+                window.grecaptcha?.reset();
+                formMsg.textContent = 'Form submitted successfully!';
+                formMsg.className = 'form-status success';
+            } catch {
+                formMsg.textContent = 'There was a network or server error.';
+                formMsg.className = 'form-status error';
+            } finally {
+                if (submitBtn) {
+                    submitBtn.textContent = defaultBtnText;
+                    submitBtn.classList.remove('is-loading');
+                    submitBtn.disabled = false;
+                }
+            }
+            
+        };
+
+        form?.addEventListener('submit', handleSubmit);
+        return () => form?.removeEventListener('submit', handleSubmit);
+    }, [open]);
+
+    return (
+        <>
+            {!open && (
+                <button
+                    className="sticky-icon-btn enquiry"
+                    onClick={() => setOpen(true)}
+                    aria-label="Contact Us"
+                    title="Contact Us"
+                >
+                    <i className="fas fa-envelope"></i>
+                </button>
+            )}
+
+            <div className={`sticky-form-modal${open ? ' open' : ' closed'}`}>
+                <div className="sticky-form-content">
+                    <span
+                        className="close-sticky-form"
+                        onClick={() => setOpen(false)}
+                        aria-label="Close enquiry form"
+                        role="button"
+                        tabIndex={0}
+                    >
+                        &times;
+                    </span>
+                    <h3>Contact Us</h3>
+                    <form id="stickyContactForm" ref={formRef}>
+                        <input
+                            type="text"
+                            name="contactInfo"
+                            placeholder="Your Email or Phone"
+                            required
+                        />
+                        <select name="ctaType" required>
+                            <option value="">I am a...</option>
+                            <option value="Individual">Individual</option>
+                            <option value="Partner">Small Business</option>
+                        </select>
+                        <select name="serviceType" required>
+                            <option value="">--Please choose service--</option>
+                            <option value="Outsourced CFO / Bookkeeping">Outsourced CFO / Bookkeeping</option>
+                            <option value="Tax Filing">Tax Filing</option>
+                            <option value="Internal Audit">Internal Audit</option>
+                            <option value="QuickBooks/Financial Edge Setup">QuickBooks/Financial Edge Setup</option>
+                            <option value="Advisory Services">Advisory Services</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <textarea
+                            name="shortDescription"
+                            placeholder="Short description"
+                            rows="3"
+                        ></textarea>
+                        <div id="recaptcha-container" className="recaptcha"></div>
+                        <button type="submit">Send</button>
+                        <div id="formStatus" ref={msgRef} className="form-status"></div>
+                    </form>
+                </div>
             </div>
-        </section>
-);
+        </>
+    );
 };
 
 export default EnquiryForm;

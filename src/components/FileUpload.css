@@ -1,0 +1,134 @@
+.sticky-open-btn.upload {
+    position: fixed;
+    right: 12rem; /* Offset from right to avoid overlap with EnquiryForm */
+    bottom: 5rem;
+    z-index: 1001;
+    background: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 24px 24px 0 0;
+    padding: 0.7rem 2rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+.sticky-form-modal.upload {
+    position: fixed;
+    right: 2rem;
+    bottom: 9rem;
+    z-index: 1000;
+    max-width: 340px;
+    width: 100%;
+    transition: opacity 0.3s, transform 0.3s;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.sticky-form-modal.upload.closed {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(40px);
+}
+
+.sticky-form-modal.upload.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.sticky-form-content {
+    background: #fff;
+    border-radius: 12px 12px 0 0;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.15);
+    padding: 1.5rem 1rem 1rem 1rem;
+    position: relative;
+}
+
+.close-sticky-form {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+    font-size: 1.7rem;
+    color: #28a745;
+    cursor: pointer;
+    font-weight: bold;
+    z-index: 2;
+}
+
+.form-status {
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.form-status.success {
+    color: green;
+}
+
+.form-status.error {
+    color: red;
+}
+
+/* Add to both FileUpload.css and EnquiryForm.css */
+.sticky-icon-btn {
+    position: fixed;
+    bottom: 5rem;
+    z-index: 1001;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.sticky-icon-btn.upload {
+    bottom: 9rem;
+    right: 2rem;
+    background: #28a745;
+}
+
+.sticky-icon-btn.enquiry {
+    right: 2rem;
+    background: #007bff;
+}
+
+.sticky-icon-btn:hover,
+.sticky-icon-btn:focus {
+    background: #0056b3;
+}
+
+@media (max-width: 600px) {
+    .sticky-icon-btn,
+    .sticky-icon-btn.upload,
+    .sticky-icon-btn.enquiry {
+        width: 44px;
+        height: 44px;
+        font-size: 1.4rem;
+        right: 1rem;
+        bottom: 4rem;
+    }
+
+    .sticky-icon-btn.upload {
+        bottom: 7rem; /* stack above enquiry button */
+    }
+
+    .sticky-form-modal.upload,
+    .sticky-form-modal.enquiry {
+        max-width: 95vw;
+        right: 0.5rem;
+        left: 0.5rem;
+        bottom: 8rem;
+    }
+
+    .sticky-form-content {
+        padding: 1rem 0.5rem 0.5rem 0.5rem;
+    }
+}
