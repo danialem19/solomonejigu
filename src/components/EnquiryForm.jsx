@@ -33,6 +33,11 @@ const EnquiryForm = () => {
         const handleSubmit = async (e) => {
             e.preventDefault();
             const recaptchaResponse = window.grecaptcha?.getResponse();
+            if (!recaptchaResponse) {
+                formMsg.textContent = 'Please complete the reCAPTCHA.';
+                formMsg.className = 'form-status error';
+                return;
+            }
             const formData = {
                 contactInfo: form.querySelector('[name="contactInfo"]').value,
                 ctaType: form.querySelector('[name="ctaType"]').value,
@@ -52,6 +57,7 @@ const EnquiryForm = () => {
             try {
                 await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
+                    mode: 'no-cors',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
                     body: JSON.stringify(formData),
                 });

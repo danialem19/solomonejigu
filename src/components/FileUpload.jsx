@@ -110,31 +110,18 @@ const FileUpload = () => {
         recaptchaToken: token,
       };
 
-      const response = await fetch(WEBAPP_URL, {
+      await fetch(WEBAPP_URL, {
         method: 'POST',
+        mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain;charset=UTF-8' }, // simple → fewer CORS issues
-        body: JSON.stringify(payload),
-        credentials: 'omit',
-        redirect: 'follow',
+        body: JSON.stringify(payload)
       });
 
       // Read/log server response
-      const raw = await response.text();
-      console.log('Upload status:', response.status, response.statusText);
-      console.log('Raw body:', raw);
-      let result;
-      try { result = JSON.parse(raw); } catch { result = { ok: false, message: raw || 'Non-JSON response' }; }
-      console.log('Parsed result:', result);
-
-      if (response.ok && result.ok) {
-        form.reset();
-        if (window.grecaptcha && recaptchaId !== null) window.grecaptcha.reset(recaptchaId);
-        msg.textContent = result.message || 'File uploaded successfully!';
-        msg.className = 'form-status success';
-      } else {
-        msg.textContent = result.message || `Upload failed (HTTP ${response.status}).`;
-        msg.className = 'form-status error';
-      }
+      form.reset();
+      if (window.grecaptcha && recaptchaId !== null) window.grecaptcha.reset(recaptchaId);
+      msg.textContent = 'File uploaded successfully!';
+      msg.className = 'form-status success';
     } catch (err) {
       console.error('Network error:', err);
       msg.textContent = 'Network or server error.';
